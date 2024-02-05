@@ -1,22 +1,17 @@
-import { HttpClient } from '@angular/common/http';
+import { Todo } from './../../list-todos/list-todos.component';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, InjectionToken } from '@angular/core';
-import { Todo } from '../../list-todos/list-todos.component';
 import { Observable } from 'rxjs';
 
-
-// export const TODO_DATA_SERVICE_TOKEN = new InjectionToken<TodoDataService>('TodoDataService');
 @Injectable({
   providedIn: 'root'
 })
 export class TodoDataService {
-
   
   constructor(public http : HttpClient) { }
 
-  retrieveAllTodos(username: string):Observable<any[]>{
-    let op= this.http.get<any[]>(`http://localhost:8080/users/${username}/todos`);
-    console.log(op);
-    return op;
+  retrieveAllTodos(username: string):Observable<any[]> {
+    return this.http.get<any[]>(`http://localhost:8080/users/${username}/todos`);
   }
 
   deleteTodo(username:string , id: number){
@@ -25,6 +20,14 @@ export class TodoDataService {
 
   retrieveTodo(username:string , id: number): Observable<Todo>{
     return this.http.get<Todo>(`http://localhost:8080/users/${username}/todos/${id}`);
+  }
+
+  updateTodo(username : string , id:number,todo : Todo) {
+    return this.http.put(`http://localhost:8080/users/${username}/todos/${id}`,todo , {withCredentials:true});
+  }
+
+  createTodo(username :string ,todo : Todo){
+    return this.http.post(`http://localhost:8080/users/${username}/todos`,todo);
   }
 
 }
