@@ -55,7 +55,6 @@ export class TodoComponent implements OnInit{
           this.router.navigate(['todos'])
         }
       )
-
     }
   }
 }
