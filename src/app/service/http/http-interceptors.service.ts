@@ -8,16 +8,16 @@ import { Observable } from 'rxjs';
 export class HttpInterceptorsService implements HttpInterceptor{
 
   constructor() { }
-  intercept(req: HttpRequest<any>, next: HttpHandler) {
+  intercept(request: HttpRequest<any>, next: HttpHandler) {
     let username = 'mahenoorahsan'
     let password = 'password'
 
     let basicHeaderString = 'Basic ' + window.btoa(username + ':' + password);
-    req= req.clone({
+    request= request.clone({
       setHeaders :{
         Authorization : basicHeaderString
       }
     })
-    return next.handle(req);
+    return next.handle(request);
   }
 }

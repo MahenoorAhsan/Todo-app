@@ -1,4 +1,5 @@
-import { routes } from './../app.routes';
+import { response } from 'express';
+import { BasicAuthenticationofTodoService } from './../service/basic-authenticationof-todo.service';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -14,13 +15,14 @@ import { HardcodedAuthenticationService } from '../service/hardcoded-authenticat
 })
 export class LoginComponent implements OnInit{
 
-  username = ''
-  password = ''
+  username = 'mahenoorahsan'
+  password = 'password'
   errorMessage = 'invalid credentials'
   invalidLogin = false
 
   constructor(private router : Router,
-    private hardcodedAuthenticatedService : HardcodedAuthenticationService
+    private hardcodedAuthenticatedService : HardcodedAuthenticationService,
+    public basicAuthenticationofTodoService : BasicAuthenticationofTodoService
     ) {
 
   }
@@ -33,10 +35,28 @@ export class LoginComponent implements OnInit{
     // console.log("this is password" ,this.password);
     // if(this.username === "mahenoorahsan" && this.password === "password"){
     if(this.hardcodedAuthenticatedService.authenticate(this.username,this.password)){
-      this.router.navigate(['welcome', this.username]);
+      console.log(this.router.navigate(['welcome', this.username]));
       this.invalidLogin = false;
     }else{
       this.invalidLogin = true;
     }
+  }
+
+
+  handleBasicAuthLogin() {
+    // console.log(this.username);
+    //if(this.username==="in28minutes" && this.password === 'dummy') {
+    this.basicAuthenticationofTodoService.executedAuthenticationService(this.username, this.password)
+        .subscribe(
+          data => {
+            console.log(data)
+            this.router.navigate(['welcome', this.username])
+            this.invalidLogin = false      
+          },
+          error => {
+            console.log(error)
+            this.invalidLogin = true
+          }
+        )
   }
 }
