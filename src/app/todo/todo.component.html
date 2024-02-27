@@ -6,7 +6,7 @@
     <form (ngSubmit)="!todoForm.invalid && saveTodo()" #todoForm="ngForm">
         <fieldset class="form-group">
             <label>Username</label>
-            <input type="text" name="description" #description="ngModel"
+            <input type="text" name="username" #description="ngModel"
              [(ngModel)]="todo.username" required="required" class="form-control">
         </fieldset>
         <fieldset class="form-group">

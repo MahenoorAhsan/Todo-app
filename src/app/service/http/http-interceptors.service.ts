@@ -1,3 +1,4 @@
+import { BasicAuthenticationofTodoService } from './../basic-authenticationof-todo.service';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -7,17 +8,25 @@ import { Observable } from 'rxjs';
 })
 export class HttpInterceptorsService implements HttpInterceptor{
 
-  constructor() { }
-  intercept(request: HttpRequest<any>, next: HttpHandler) {
-    let username = 'mahenoorahsan'
-    let password = 'password'
+  constructor(
+    public basicAuthenticationofTodoService : BasicAuthenticationofTodoService,
+  ) { }
 
-    let basicHeaderString = 'Basic ' + window.btoa(username + ':' + password);
-    request= request.clone({
-      setHeaders :{
-        Authorization : basicHeaderString
-      }
-    })
+  
+  intercept(request: HttpRequest<any>, next: HttpHandler) {
+    // let username = 'mahenoorahsan'
+    // let password = 'password'
+
+    // let basicHeaderString = 'Basic ' + window.btoa(username + ':' + password);
+    let basicHeaderString = this.basicAuthenticationofTodoService.getAuthenticatedToken();
+    let username = this.basicAuthenticationofTodoService.getAuthenticatedUser();
+    if(username && basicHeaderString){
+      request= request.clone({
+        setHeaders :{
+          Authorization : basicHeaderString
+        }
+      })
+    }
     return next.handle(request);
   }
 }

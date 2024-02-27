@@ -15,7 +15,7 @@ import { response } from 'express';
 })
 export class TodoComponent implements OnInit{
 
-  id : number =0;
+  id : number = 0;
   username : string ='';
   todo: Todo = new Todo(this.id,this.username, '', new Date(),false);
 
@@ -28,7 +28,6 @@ export class TodoComponent implements OnInit{
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-
     // this.todo = new Todo
     if(this.id!=-1){
       this.todoDataService.retrieveTodo('mahenoor',this.id).subscribe(
@@ -41,6 +40,7 @@ export class TodoComponent implements OnInit{
 
   saveTodo(){
     if(this.id == -1){
+      console.log(this.todo)
       this.todoDataService.createTodo('mahenoor' , this.todo).subscribe(
         data=>{
           console.log(data)
@@ -49,6 +49,7 @@ export class TodoComponent implements OnInit{
       )
     }
     else{
+      console.log(this.todo)
       this.todoDataService.updateTodo('mahenoor' , this.id ,this.todo).subscribe(
         response =>{
           console.log(response)
